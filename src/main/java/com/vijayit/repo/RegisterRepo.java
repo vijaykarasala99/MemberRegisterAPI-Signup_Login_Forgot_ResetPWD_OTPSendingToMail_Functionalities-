@@ -9,5 +9,7 @@ public interface RegisterRepo extends JpaRepository<RegisterEntity, Long> {
 	public RegisterEntity findByEmail(String email);
 	
 	public RegisterEntity findByEmailAndPwd(String email, String pwd);
-
+	
+	public RegisterEntity findUserByEmailAndPwd(String email,String pwd);
+	
 }
