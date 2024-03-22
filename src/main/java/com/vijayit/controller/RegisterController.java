@@ -63,7 +63,25 @@ public class RegisterController {
        return ResponseEntity.ok().build();
    }
 
+   
+   @PostMapping(path = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	  public ResponseEntity<String> saveBird(
+	    		@RequestParam("pic") MultipartFile file,
+	            @RequestParam("name") String name,
+	            @RequestParam("mobileno") Long mobileno,
+	            @RequestParam("email") String email,
+	            @RequestParam("pwd") String pwd,
+	            @RequestParam("dob") LocalDate dob,
+	            @RequestParam("time")LocalDateTime time) {
+	        try {
+	        	registerService.save(file, name, mobileno, email, pwd, dob, time);
+	            return ResponseEntity.ok().body("saved successfully");
+	        } catch (Exception e) {
+	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving: " + e.getMessage());
+	        }
+	    }
     
+   
    
    @GetMapping("/get/{id}")
 	public RegisterEntity getById(@PathVariable Long id) {
@@ -82,27 +100,7 @@ public class RegisterController {
    }
    
  
-	
-	  @PostMapping(path = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	  public ResponseEntity<String> saveBird(
-	    		@RequestParam("pic") MultipartFile file,
-	            @RequestParam("name") String name,
-	            @RequestParam("mobileno") Long mobileno,
-	            @RequestParam("email") String email,
-	            @RequestParam("pwd") String pwd,
-	            @RequestParam("dob") LocalDate dob,
-	            @RequestParam("time")LocalDateTime time) {
-	        try {
-	        	registerService.save(file, name, mobileno, email, pwd, dob, time);
-	            return ResponseEntity.ok().body("saved successfully");
-	        } catch (Exception e) {
-	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving: " + e.getMessage());
-	        }
-	    }
-	 
-	  
-	  
-	  
+  
 	  @PostMapping("/signup")
 	    public ResponseEntity<String> signUp(@RequestBody SignUpForm signUpForm) {
 	        if (registerService.signUp(signUpForm)) {
